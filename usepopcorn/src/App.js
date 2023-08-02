@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import StarRating from "./StarRating";
 
 const average = (arr) =>
@@ -9,7 +9,10 @@ const KEY = "d5d8e80b";
 export default function App() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
+  const [watched, setWatched] = useState(function () {
+    const storedValue = localStorage.getItem("watched");
+    return JSON.parse(storedValue);
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedId, setSelectedId] = useState(null);
@@ -29,6 +32,13 @@ export default function App() {
   function handleDeleteWatched(id) {
     setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
   }
+
+  useEffect(
+    function () {
+      localStorage.setItem("watched", JSON.stringify(watched));
+    },
+    [watched]
+  );
 
   useEffect(
     function () {
@@ -144,6 +154,24 @@ function Logo() {
 }
 
 function Search({ query, setQuery }) {
+  const inputEl = useRef(null);
+  useEffect(
+    function () {
+      inputEl.current.focus();
+      function callback(e) {
+        if (document.activeElement === inputEl.current) return;
+        if (e.code === "Enter") {
+          inputEl.current.focus();
+          setQuery("");
+        }
+      }
+
+      document.addEventListener("keydown", callback);
+      return () => document.addEventListener("keydown", callback);
+    },
+    [setQuery]
+  );
+
   return (
     <input
       className="search"
@@ -151,6 +179,7 @@ function Search({ query, setQuery }) {
       placeholder="Search movies..."
       value={query}
       onChange={(e) => setQuery(e.target.value)}
+      ref={inputEl}
     />
   );
 }
@@ -178,29 +207,6 @@ function Box({ children }) {
     </div>
   );
 }
-
-// function WatchedBox() {
-//   const [watched, setWatched] = useState(tempWatchedData);
-//   const [isOpen2, setIsOpen2] = useState(true);
-
-//   return (
-//     <div className="box">
-//       <button
-//         className="btn-toggle"
-//         onClick={() => setIsOpen2((open) => !open)}
-//       >
-//         {isOpen2 ? "–" : "+"}
-//       </button>
-//       {isOpen2 && (
-//         <>
-//           <WatchedSummary watched={watched} />
-
-//           <WatchedMovieList watched={watched} />
-//         </>
-//       )}
-//     </div>
-//   );
-// }
 
 function MovieList({ movies, onSelectMovie }) {
   return (
@@ -395,7 +401,7 @@ function WatchedSummary({ watched }) {
         </p>
         <p>
           <span>⏳</span>
-          <span>{avgRuntime} min</span>
+          <span>{avgRuntime.toFixed(2)} min</span>
         </p>
       </div>
     </div>
