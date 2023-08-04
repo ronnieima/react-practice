@@ -5,7 +5,6 @@ import Loader from "./Loader";
 import Error from "./Error";
 import StartScreen from "./StartScreen";
 import Question from "./Question";
-import NextButton from "./NextButton";
 import Progress from "./Progress";
 import Finished from "./Finished";
 import Footer from "./Footer";
@@ -82,7 +81,6 @@ function reducer(state, action) {
         status: state.secondsRemaining === 0 ? "finished" : state.status,
       };
     case "navigateLeft":
-      if (action.payload === 0) return state;
       return {
         ...state,
         index: action.payload - 1,

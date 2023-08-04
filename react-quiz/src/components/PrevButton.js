@@ -1,6 +1,7 @@
-function PrevButton({ dispatch, hasAnswered, index, numQuestions }) {
+function PrevButton({ dispatch, index }) {
   return (
     <button
+      disabled={index === 0}
       className="btn btn-navigate"
       onClick={() => dispatch({ type: "navigateLeft", payload: index })}
     >
