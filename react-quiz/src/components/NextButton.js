@@ -1,24 +1,17 @@
-function NextButton({ dispatch, answer, index, numQuestions }) {
-  if (answer === null) return null;
-
-  if (index < numQuestions - 1)
-    return (
-      <button
-        className="btn btn-ui"
-        onClick={() => dispatch({ type: "nextQuestion" })}
-      >
-        Next
-      </button>
-    );
-  if (index === numQuestions - 1)
-    return (
-      <button
-        className="btn btn-ui"
-        onClick={() => dispatch({ type: "finish" })}
-      >
-        Finish
-      </button>
-    );
+function NextButton({ dispatch, hasAnswered, index, numQuestions }) {
+  return (
+    <button
+      disabled={!hasAnswered}
+      className={`btn btn-navigate `}
+      onClick={() => {
+        index < numQuestions - 1
+          ? dispatch({ type: "navigateRight", payload: index })
+          : dispatch({ type: "finish", payload: index });
+      }}
+    >
+      &rarr;
+    </button>
+  );
 }
 
 export default NextButton;

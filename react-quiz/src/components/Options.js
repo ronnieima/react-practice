@@ -1,6 +1,4 @@
-function Options({ question, dispatch, answer }) {
-  const hasAnswered = answer !== null;
-
+function Options({ question, dispatch, answer, index, hasAnswered }) {
   return (
     <div className="options">
       {question.options.map((option, index) => (

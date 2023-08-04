@@ -37,7 +37,7 @@ body {
 }
 
 .main {
-  width: 50rem;
+  width: 60rem;
 }
 
 .app-header {
@@ -151,6 +151,14 @@ progress {
   margin-bottom: 3.2rem;
 }
 
+.btn-cancel {
+  width: 40%;
+}
+
+.btn-navigate {
+  height: 10%;
+}
+
 .btn-option {
   width: 100%;
   text-align: left;
@@ -256,4 +264,21 @@ progress {
 .counter * {
   font-size: inherit;
   padding: 0.8rem;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
 }
